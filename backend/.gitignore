@@ -1,0 +1,15 @@
+.DS_Store
+base/__pycache__
+agencia/__pycache__
+agencia/migrations
+base/migrations
+frontend/node_modules
+db.sqlite3
+venv
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

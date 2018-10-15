@@ -1,0 +1,10 @@
+django==2.0.6
+djangorestframework 
+markdown 
+# django-filter 
+django-cors-headers 
+django-rest-framework-mongoengine 
+#rest-social-auth 
+#psycopg2 
+#django-rest-framework-social-oauth2
+mongoengine
