@@ -1,15 +1,16 @@
 <template>
     <div>
         <div>
-            Welcome home!
-        </div>
-        <div>
-            <router-link :to="{ name: 'Dashboard'}">User</router-link>
+            <Trayectos/>
         </div>
     </div>
 </template>
 <script>
+import Trayectos from '@/components/AsignarAsiento'
 export default {
+  components: {
+    Trayectos
+  }
 }
 </script>
 <style lang="">
