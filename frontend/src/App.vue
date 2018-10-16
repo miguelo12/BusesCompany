@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar/>
+    <NavBar v-if="show" />
     <div>
       <router-view/>
     </div>
@@ -11,6 +11,7 @@
 import NavBar from '@/components/NavBar'
 export default {
   name: 'App',
+  'show-NavBar': true,
   components: {
     NavBar
   }

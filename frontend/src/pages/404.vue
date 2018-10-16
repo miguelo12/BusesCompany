@@ -5,6 +5,7 @@
 </template>
 <script>
 export default {
+  'show-NavBar': false
 }
 </script>
 <style lang="">
