@@ -57,7 +57,17 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      var nombre = this.form.nombre
+      var rut = this.form.rut
+      // Fetches posts when the component is created.
+      axios.post('http://localhost:8000/api/pasajeros/', {
+        nombre: nombre,
+        rut: rut
+      }).then(response => {
+        alert(response.id)
+      }).catch(e => {
+        this.errors.push(e)
+      })
     },
     onReset (evt) {
       evt.preventDefault()

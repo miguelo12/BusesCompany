@@ -1,29 +1,37 @@
 <template>
   <div id="app">
-    <NavBar v-if="show" />
-    <div>
-      <router-view/>
+    <v-app>
+      <v-parallax dark height="1300" src="./assets/fondo-patagonia.jpg">
+        <NavBar v-if="'show-NavBar'" />
+          <v-content>
+            <router-view/>
+          </v-content>
+        <Footer v-if="'show-NavBar'" />
+      </v-parallax>
+      </v-app>
     </div>
-  </div>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar'
+import NavBar from '@/components/Layout/NavBar'
+import Footer from '@/components/Layout/Footer'
 export default {
   name: 'App',
   'show-NavBar': true,
   components: {
-    NavBar
+    NavBar,
+    Footer
   }
 }
 </script>
 
 <style lang="">
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>

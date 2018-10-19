@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import Trayectos from '@/components/AsignarAsiento'
+import Trayectos from '@/components/Chofer'
 export default {
   components: {
     Trayectos

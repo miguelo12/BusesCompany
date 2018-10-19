@@ -1,14 +1,31 @@
 <template>
     <div>
-        <b-jumbotron>
-            <template slot="header">
+        <v-container fluid>
+            <h1 class="display-4">
                 Chofer
-            </template>
-            <template slot="lead">
+            </h1>
+            <h2 class="display-3">
                 Agregar nuevo Chofer.
-            </template>
-            <hr class="my-4">
+            </h2>
+            <!-- <hr class="my-4"> -->
             <div class="container">
+
+            <v-form @submit="onSubmit" @reset="onReset" v-if="show" v-model="valid">
+                <v-text-field
+                  v-model="form.nombre"
+                  :rules="nameRules"
+                  :counter="10"
+                  label="Nombre:"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  v-model="email"
+                  :rules="emailRules"
+                  label="E-mail"
+                  required
+                ></v-text-field>
+              </v-form>
+
                 <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                     <b-form-group id="exampleInputGroup1"
                                     label="Nombre:"
@@ -33,15 +50,17 @@
                         </b-form-input>
                     </b-form-group>
                     <br>
-                <b-button type="submit" variant="primary">Submit</b-button>
-                <b-button type="reset" variant="danger">Reset</b-button>
+                <v-btn type="submit" color="info">Submit</v-btn>
+                <v-btn type="reset" color="error">Reset</v-btn>
                 </b-form>
+
             </div>
-        </b-jumbotron>
+        </v-container>
     </div>
 </template>
 <script>
 import DatePicker from 'vue2-datepicker'
+import axios from 'axios'
 
 export default {
   components: { DatePicker },
@@ -57,7 +76,17 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      alert(JSON.stringify(this.form))
+      var nombre = this.form.nombre
+      var rut = this.form.rut
+      // Fetches posts when the component is created.
+      axios.post('http://localhost:8000/api/choferes/', {
+        nombre: nombre,
+        rut: rut
+      }).then(response => {
+        alert(response.id)
+      }).catch(e => {
+        this.errors.push(e)
+      })
     },
     onReset (evt) {
       evt.preventDefault()
