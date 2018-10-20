@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import Trayectos from '@/components/Chofer'
+import Trayectos from '@/components/Trayectos/index'
 export default {
   components: {
     Trayectos
