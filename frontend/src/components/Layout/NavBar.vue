@@ -17,7 +17,7 @@
   </v-navigation-drawer>
   <v-toolbar color="teal" app fixed clipped-left dark>
     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-    <v-toolbar-title>Agencia</v-toolbar-title>
+    <v-toolbar-title>BusesCompany</v-toolbar-title>
   </v-toolbar>
   </div>
 </template>

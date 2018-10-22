@@ -24,18 +24,18 @@ class AsientoAsignado (EmbeddedDocument):
 
 class Buses (Document):
     matricula = fields.StringField(max_length=100, blank=False, required=True)
-    choferes_id = fields.ReferenceField(Choferes, blank=False, required=True, dbref=True)
+    choferes = fields.ReferenceField(Choferes, blank=False, required=True, dbref=True)
     asientoAsignado = fields.EmbeddedDocumentListField(AsientoAsignado)
     
     def __str__(self):
-        return self.matricula
+        return self.id
 
 class Trayectos (Document):
     origen = fields.StringField(max_length=150, blank=False, required=True)
     destino = fields.StringField(max_length=150, blank=False, required=True)
     horario = fields.DateTimeField(blank=False, required=True)
     subida = fields.StringField(max_length=150, blank=False, required=True)
-    buses_id = fields.ReferenceField(Buses, blank=False, required=True, dbref=True)
+    buses = fields.ReferenceField(Buses, blank=False, required=True, dbref=True)
 
     def __str__(self):
         return self.destino

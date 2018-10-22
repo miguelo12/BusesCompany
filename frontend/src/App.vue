@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import NavBar from '@/components/Layout/NavBar'
-import Footer from '@/components/Layout/Footer'
+import NavBar from '@/components/Layout/navBar'
+import Footer from '@/components/Layout/footer'
 export default {
   name: 'App',
   'show-NavBar': true,

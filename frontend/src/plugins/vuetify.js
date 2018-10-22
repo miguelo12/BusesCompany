@@ -14,7 +14,8 @@ Vue.use(Vuetify, {
     'switch': 'mdi-nintendo-switch',
     'chart-line': 'mdi-chart-line',
     'home': 'mdi-home',
-    'information': 'mdi-information'
+    'information': 'mdi-information',
+    'alert-octagram': 'mdi-alert-octagram'
   },
   options: {
     minifyTheme: function (css) {

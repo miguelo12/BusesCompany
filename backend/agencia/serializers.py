@@ -1,28 +1,33 @@
 from rest_framework import serializers
-from rest_framework_mongoengine import serializers as mongoserializers
+from rest_framework_mongoengine.serializers import DocumentSerializer, EmbeddedDocumentSerializer
 from .models import Choferes, Pasajeros, Buses, Trayectos, AsientoAsignado
 
-class ChoferesSerializer(mongoserializers.DocumentSerializer):
+class ChoferesSerializer(DocumentSerializer):
     class Meta:
         model = Choferes
         fields = '__all__'
 
-class PasajerosSerializer(mongoserializers.DocumentSerializer):
+class PasajerosSerializer(DocumentSerializer):
     class Meta:
         model = Pasajeros
         fields = '__all__'
 
-class AsientoAsignadoSerializer(mongoserializers.DocumentSerializer):
+class AsientoAsignadoSerializer(EmbeddedDocumentSerializer):
     class Meta:
         model = AsientoAsignado
         fields = '__all__'
 
-class BusesSerializer(mongoserializers.DocumentSerializer):
+class BusesSerializer(DocumentSerializer):
+    choferes = ChoferesSerializer(many=False)
+    asientoAsignado = AsientoAsignadoSerializer(many=True)
+
     class Meta:
         model = Buses
         fields = '__all__'
 
-class TrayectosSerializer(mongoserializers.DocumentSerializer):
+class TrayectosSerializer(DocumentSerializer):
+    buses = BusesSerializer(many=False)
+
     class Meta:
         model = Trayectos
         fields = '__all__'
