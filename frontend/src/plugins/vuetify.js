@@ -15,7 +15,10 @@ Vue.use(Vuetify, {
     'chart-line': 'mdi-chart-line',
     'home': 'mdi-home',
     'information': 'mdi-information',
-    'alert-octagram': 'mdi-alert-octagram'
+    'alert-octagram': 'mdi-alert-octagram',
+    'trash-can-outline': 'mdi-trash-can-outline',
+    'edit': 'mdi-edit',
+    'bus': 'mdi-bus'
   },
   options: {
     minifyTheme: function (css) {

@@ -31,3 +31,13 @@ class TrayectosSerializer(DocumentSerializer):
     class Meta:
         model = Trayectos
         fields = '__all__'
+
+class SetTrayectoSerializer(DocumentSerializer):
+    class Meta:
+        model = Trayectos
+        fields = '__all__'
+
+class SetBusSerializer(DocumentSerializer):
+    class Meta:
+        model = Buses
+        fields = '__all__'

@@ -108,19 +108,11 @@
         <td class="text-xs-left">{{ props.item.subida }}</td>
         <td class="text-xs-left">{{ props.item.buses.matricula }}</td>
         <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            Editar
-          </v-icon>
-          <v-icon
-            small
-            @click="deleteItem(props.item)"
-          >
-            Eliminar
-          </v-icon>
+          <v-icon small class="mr-2">mdi-edit</v-icon>
+          <i @click="editItem(props.item)" class="material-icons">edit</i>
+          <i @click="editItem(props.item)" class="material-icons">trash</i>
+          <v-icon small @click="deleteItem(props.item)">mdi-trash</v-icon>
+          <v-icon small @click="deleteItem(props.item)">mdi-bus</v-icon>
         </td>
       </template>
       <template slot="no-data">
@@ -256,8 +248,22 @@ export default {
       this.dialog = true
     },
     deleteItem (item) {
-      const index = this.trayectos.indexOf(item)
-      confirm('¿Estas seguro que quiere eliminar el trayecto?') && this.trayectos.splice(index, 1)
+      if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
+        axios.delete(url + 'trayectoSet/' + item.id + '/').then(response => {
+          this.initialize()
+          this.snackbar_color = 'success'
+          this.snackbar_timeout = 4000
+          this.snackbar_text = 'Se ha eliminado con exito.'
+          this.snackbar = true
+        }).catch(e => {
+          this.snackbar_color = 'error'
+          this.snackbar_timeout = 4000
+          this.snackbar_text = 'Error inesperado.'
+          this.snackbar = true
+        })
+      }
+      // const index = this.trayectos.indexOf(item)
+      // confirm('¿Estas seguro que quiere eliminar el trayecto?') && this.trayectos.splice(index, 1)
     },
     close () {
       this.dialog = false
@@ -268,23 +274,24 @@ export default {
     },
     save () {
       if (this.$refs.form.validate()) {
-        // axios.post('http://localhost:8000/api/buses/', {
-        //   origen: this.origen,
-        //   destino: this.destino,
-        //   horario: this.picker_date + ' ' + this.picker_time,
-        //   subida: this.subida,
-        //   buses: this.buses
-        // }).then(response => {
-        //   alert(response.id)
-        // }).catch(e => {
-        //   alert(e)
-        // })
-        console.log(this.editedItem)
-        // if (this.editedIndex > -1) {
-        //   Object.assign(this.trayectos[this.editedIndex], this.editedItem)
-        // } else {
-        //   this.trayectos.push(this.editedItem)
-        // }
+        axios.post(url + 'trayectoSet/', {
+          origen: this.editedItem.origen,
+          destino: this.editedItem.destino,
+          horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,
+          subida: this.editedItem.subida,
+          buses: this.editedItem.buses
+        }).then(response => {
+          this.initialize()
+          this.snackbar_color = 'success'
+          this.snackbar_timeout = 4000
+          this.snackbar_text = 'Se ha guardado con exito.'
+          this.snackbar = true
+        }).catch(e => {
+          this.snackbar_color = 'error'
+          this.snackbar_timeout = 4000
+          this.snackbar_text = 'Error inesperado.'
+          this.snackbar = true
+        })
         this.close()
       }
     }
