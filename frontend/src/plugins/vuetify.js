@@ -1,3 +1,4 @@
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
@@ -12,13 +13,14 @@ Vue.use(Vuetify, {
     'xbox': 'mdi-xbox',
     'playstation': 'mdi-playstation',
     'switch': 'mdi-nintendo-switch',
-    'chart-line': 'mdi-chart-line',
-    'home': 'mdi-home',
-    'information': 'mdi-information',
-    'alert-octagram': 'mdi-alert-octagram',
-    'trash-can-outline': 'mdi-trash-can-outline',
-    'edit': 'mdi-edit',
-    'bus': 'mdi-bus'
+    'insert_chart': 'insert_chart',
+    'home': 'home',
+    'info': 'info',
+    'warning': 'warning',
+    'delete': 'delete',
+    'edit': 'edit',
+    'directions_bus': 'directions_bus',
+    'view_headline': 'view_headline'
   },
   options: {
     minifyTheme: function (css) {

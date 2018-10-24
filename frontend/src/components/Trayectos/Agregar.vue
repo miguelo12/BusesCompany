@@ -12,7 +12,7 @@
                   :rules="origenRules"
                   :counter="50"
                   :messages="['Messages']"
-                  prepend-icon="mdi-home"
+                  prepend-icon="home"
                   label="Origen:"
                   required></v-text-field>
 
@@ -21,7 +21,7 @@
                   :rules="destinoRules"
                   :counter="50"
                   :messages="['Messages']"
-                  prepend-icon="mdi-home"
+                  prepend-icon="home"
                   label="Destino:"
                   required></v-text-field>
 
@@ -30,7 +30,7 @@
                   :rules="subidaRules"
                   :counter="50"
                   :messages="['Messages']"
-                  prepend-icon="mdi-home"
+                  prepend-icon="home"
                   label="subida:"
                   required></v-text-field>
 
@@ -49,7 +49,7 @@
                       v-model="picker_date"
                       label="Fecha:"
                       :rules="[v => !!v || 'Buses is required']"
-                      prepend-icon="mdi-home"
+                      prepend-icon="home"
                       :messages="['Messages']"
                       required
                       readonly
@@ -76,7 +76,7 @@
                       v-model="picker_time"
                       label="Hora:"
                       :rules="[v => !!v || 'Buses is required']"
-                      prepend-icon="mdi-home"
+                      prepend-icon="home"
                       :messages="['Messages']"
                       required
                       readonly></v-text-field>
@@ -93,7 +93,7 @@
                   :items="items"
                   :rules="[v => !!v || 'Buses is required']"
                   :messages="['Messages']"
-                  prepend-icon="mdi-home"
+                  prepend-icon="home"
                   label="Buses:"
                   required></v-select>
               <v-btn :disabled="!valid" @click="submit" color="info">Submit</v-btn>

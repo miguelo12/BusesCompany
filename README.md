@@ -1,27 +1,19 @@
 # BusesCompany
 
-# Debes tener instalado el virtualenv
+# Es necesario tener instalado virtualenv
 >pip install virtualenv
 
 # Instalar los requerimientos
 ```
 cd backend
 
-virtualenv venv (En caso de no tener la carpeta venv, omitir.)
+virtualenv venv (En caso de no tener la carpeta venv ejecutar este script).
 
-venv\Scripts\activate (Debes estar en backend para correr el comando.)
+venv\Scripts\activate
 
 pip install -r requirements.txt
-            o
-pip3 install -r requirements.txt
-```
 
+python manage.py runserver
+```
 # Vue.js
 >Leer README.md en frontend.
-
-# Correr el servidor python.
-```
-python manage.py runserver
-            o
-python3 manage.py runserver
-```

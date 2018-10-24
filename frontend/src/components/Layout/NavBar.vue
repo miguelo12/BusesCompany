@@ -16,7 +16,7 @@
     </v-list>
   </v-navigation-drawer>
   <v-toolbar color="teal" app fixed clipped-left dark>
-    <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+    <v-toolbar-side-icon  @click.stop="drawer = !drawer"><v-icon>view_headline</v-icon></v-toolbar-side-icon>
     <v-toolbar-title>BusesCompany</v-toolbar-title>
   </v-toolbar>
   </div>
@@ -26,9 +26,9 @@ export default {
   data: () => ({
     drawer: true,
     items: [
-      { icon: 'mdi-home', text: 'Home' },
-      { icon: 'mdi-chart-line', text: 'Dashboard' },
-      { icon: 'mdi-information', text: 'About' }
+      { icon: 'home', text: 'Home' },
+      { icon: 'insert_chart', text: 'Dashboard' },
+      { icon: 'info', text: 'About' }
     ]
   }),
   props: {

@@ -29,7 +29,7 @@
         :items="items"
         :rules="[v => !!v || 'Pasajero is required']"
         :messages="['Messages']"
-        prepend-icon="mdi-home"
+        prepend-icon="home"
         label="Pasajero:"
         required></v-select>
       <v-btn :disabled="!valid" @click="submit" color="info">Submit</v-btn>
