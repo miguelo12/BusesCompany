@@ -1,6 +1,6 @@
 <template>
     <div>
-        About: Hola, soy miguel bienvenido.
+        <router-view></router-view>
     </div>
 </template>
 <script>

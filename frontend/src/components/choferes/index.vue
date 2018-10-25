@@ -1,5 +1,68 @@
 <template>
   <div>
+    <v-toolbar flat color="white">
+      <v-toolbar-title>choferes</v-toolbar-title>
+      <v-divider
+        class="mx-2"
+        inset
+        vertical></v-divider>
+      <v-spacer></v-spacer>
+      <v-dialog v-model="dialog" max-width="500px">
+        <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo Chofer</v-btn>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.nombre" :rules="[v => !!v || 'Nombre is required']" label="Nombre" required></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.rut" :rules="[v => !!v || 'Rut is required']" label="Rut" required></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click.native="close">Cancelar</v-btn>
+              <v-btn :disabled="!valid" color="blue darken-1" flat @click.native="save">Guardar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+    </v-toolbar>
+    <v-data-table
+      :headers="headers"
+      :items="choferes"
+      hide-actions
+      :loading="loading"
+      class="elevation-1">
+      <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-left">{{ props.item.rut }}</td>
+        <td class="text-xs-left">{{ props.item.nombre }}</td>
+        <td class="justify-center layout px-0">
+          <v-btn color="teal" @click="editItem(props.item)" flat>
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn color="teal" @click="deleteItem(props.item)" flat>
+            <v-icon>delete</v-icon>
+          </v-btn>
+        </td>
+      </template>
+      <template slot="no-data">
+        <v-alert :value="error" color="error" icon="warning">
+          Disculpa, no hay datos aun.
+        </v-alert>
+        <v-btn color="primary" @click="initialize">Reiniciar</v-btn>
+      </template>
+    </v-data-table>
     <v-snackbar
       v-model="snackbar"
       :color="snackbar_color"
@@ -9,8 +72,7 @@
       <v-btn
         dark
         flat
-        @click="snackbar = false"
-      >
+        @click="snackbar = false">
         Close
       </v-btn>
     </v-snackbar>
@@ -31,25 +93,16 @@ export default {
     snackbar_color: '',
     snackbar_timeout: 100,
     snackbar_text: '',
-    busesBox: [],
+    choferesBox: [],
     headers: [
       {
-        text: 'Codigo',
+        text: 'rut',
         align: 'left',
-        sortable: false,
-        value: 'id'
+        value: 'rut'
       },
       {
-        text: 'Origen',
-        value: 'origen'
-      },
-      {
-        text: 'Destino',
-        value: 'destino'
-      },
-      {
-        text: 'Horario',
-        value: 'horario'
+        text: 'nombre',
+        value: 'nombre'
       },
       {
         text: 'Acciones',
@@ -57,29 +110,17 @@ export default {
         sortable: false
       }
     ],
-    trayectos: [],
+    choferes: [],
     editedIndex: -1,
     editedItem: {
       codigo: '',
-      origen: '',
-      destino: '',
-      subida: '',
-      buses: null,
-      picker_date: null,
-      picker_time: null,
-      modal1: false,
-      modal2: false
+      nombre: '',
+      rut: ''
     },
     defaultItem: {
       codigo: '',
-      origen: '',
-      destino: '',
-      subida: '',
-      buses: null,
-      picker_date: null,
-      picker_time: null,
-      modal1: false,
-      modal2: false
+      nombre: '',
+      rut: ''
     }
   }),
   computed: {
@@ -96,12 +137,12 @@ export default {
     initialize () {
       this.loading = true
       this.error = false
-      axios.get(url + 'trayectos/')
+      axios.get(url + 'choferes/')
         .then(response => {
-          this.trayectos = response.data
+          this.choferes = response.data
           this.loading = false
         }).catch(e => {
-          this.trayectos = []
+          this.choferes = []
           this.snackbar_color = 'error'
           this.snackbar_timeout = 4000
           this.snackbar_text = 'Error inesperado.'
@@ -111,14 +152,14 @@ export default {
         })
     },
     editItem (item) {
-      this.editedIndex = this.trayectos.indexOf(item)
+      this.editedIndex = this.choferes.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
       // la fecha arreglar
     },
     deleteItem (item) {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
-        axios.delete(url + 'trayectoSet/' + item.id + '/').then(response => {
+        axios.delete(url + 'choferes/' + item.id + '/').then(response => {
           this.initialize()
           this.snackbar_color = 'success'
           this.snackbar_timeout = 4000
@@ -142,12 +183,9 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         if (this.editedItem.codigo === '') {
-          axios.post(url + 'trayectoSet/', {
-            origen: this.editedItem.origen,
-            destino: this.editedItem.destino,
-            horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,
-            subida: this.editedItem.subida,
-            buses: this.editedItem.buses
+          axios.post(url + 'choferes/', {
+            nombre: this.editedItem.nombre,
+            rut: this.editedItem.rut
           }).then(response => {
             this.initialize()
             this.snackbar_color = 'success'
@@ -162,13 +200,10 @@ export default {
           })
           this.close()
         } else {
-          if (confirm('¿Estas seguro que quiere editar el trayecto?')) {
-            axios.put(url + 'trayectoSet/' + this.editedItem.id + '/', {
-              origen: this.editedItem.origen,
-              destino: this.editedItem.destino,
-              horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,
-              subida: this.editedItem.subida,
-              buses: this.editedItem.buses
+          if (confirm('¿Estas seguro que quiere editar el chofer?')) {
+            axios.put(url + 'choferes/' + this.editedItem.id + '/', {
+              nombre: this.editedItem.nombre,
+              rut: this.editedItem.rut
             }).then(response => {
               this.initialize()
               this.snackbar_color = 'success'

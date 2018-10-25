@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <Trayectos/>
+            <router-view></router-view>
         </div>
     </div>
 </template>

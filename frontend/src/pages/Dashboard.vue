@@ -1,6 +1,6 @@
 <template>
     <div>
-        Welcome Dashboard! You logged in successfully!
+        <router-view></router-view>
     </div>
 </template>
 <script>

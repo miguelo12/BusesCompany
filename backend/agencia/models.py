@@ -35,7 +35,7 @@ class Trayectos (Document):
     destino = fields.StringField(max_length=150, blank=False, required=True)
     horario = fields.DateTimeField(blank=False, required=True)
     subida = fields.StringField(max_length=150, blank=False, required=True)
-    buses = fields.ReferenceField(Buses, blank=False, required=True, dbref=True)
+    buses = fields.ReferenceField(Buses, blank=True, required=False, null=True, dbref=True)
 
     def __str__(self):
         return self.destino

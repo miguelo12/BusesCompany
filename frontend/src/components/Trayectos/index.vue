@@ -78,9 +78,6 @@
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.subida" :rules="[v => !!v || 'Subida is required']" label="Subida" required></v-text-field>
                   </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-select v-model="editedItem.buses" :items="busesBox" :item-text="item => item.matricula" :item-value="item => item.id" :rules="[v => !!v || 'Buses is required']" label="Buses" required></v-select>
-                  </v-flex>
                 </v-layout>
               </v-container>
             </v-card-text>
@@ -98,23 +95,31 @@
       :headers="headers"
       :items="trayectos"
       hide-actions
-      class="elevation-1"
-    >
+      :loading="loading"
+      class="elevation-1" >
+      <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
         <td class="text-xs-left">{{ props.item.id }}</td>
         <td class="text-xs-left">{{ props.item.origen }}</td>
         <td class="text-xs-left">{{ props.item.destino }}</td>
         <td class="text-xs-left">{{ props.item.horario }}</td>
         <td class="text-xs-left">{{ props.item.subida }}</td>
-        <td class="text-xs-left">{{ props.item.buses.matricula }}</td>
+        <td class="text-xs-left" v-if="props.item.buses != null">{{ props.item.buses.matricula }}</td>
+        <td class="text-xs-left" v-if="props.item.buses == null"></td>
         <td class="justify-center layout px-0">
-          <v-icon small class="mr-3" @click="editItem(props.item)">edit</v-icon>
-          <v-icon small class="mr-3" @click="deleteItem(props.item)">delete</v-icon>
-          <v-icon small class="mr-3" @click="deleteItem(props.item)">directions_bus</v-icon>
+          <v-btn color="teal" @click="editItem(props.item)" flat>
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn color="teal" @click="deleteItem(props.item)" flat>
+            <v-icon>delete</v-icon>
+          </v-btn>
+          <v-btn color="teal" :to="{name: 'Buses', params:{ id: props.item.id }}" flat>
+            <v-icon>directions_bus</v-icon>
+          </v-btn>
         </td>
       </template>
       <template slot="no-data">
-        <v-alert :value="true" color="error" icon="warning">
+        <v-alert :value="error" color="error" icon="warning">
           Disculpa, no hay datos aun.
         </v-alert>
         <v-btn color="primary" @click="initialize">Reiniciar</v-btn>
@@ -144,13 +149,14 @@ const url = 'http://localhost:8000/api/'
 
 export default {
   data: () => ({
+    loading: true,
+    error: false,
     valid: false,
     dialog: false,
     snackbar: false,
     snackbar_color: '',
     snackbar_timeout: 100,
     snackbar_text: '',
-    busesBox: [],
     headers: [
       {
         text: 'Codigo',
@@ -191,7 +197,7 @@ export default {
       origen: '',
       destino: '',
       subida: '',
-      buses: null,
+      buses: '',
       picker_date: null,
       picker_time: null,
       modal1: false,
@@ -202,7 +208,7 @@ export default {
       origen: '',
       destino: '',
       subida: '',
-      buses: null,
+      buses: '',
       picker_date: null,
       picker_time: null,
       modal1: false,
@@ -221,32 +227,30 @@ export default {
   },
   methods: {
     initialize () {
+      this.loading = true
+      this.error = false
       axios.get(url + 'trayectos/')
         .then(response => {
           this.trayectos = response.data
+          this.loading = false
         }).catch(e => {
           this.trayectos = []
           this.snackbar_color = 'error'
           this.snackbar_timeout = 4000
           this.snackbar_text = 'Error inesperado.'
           this.snackbar = true
-        })
-      axios.get(url + 'buses/')
-        .then(response => {
-          this.busesBox = response.data
-        }).catch(e => {
-          this.trayectos = []
-          this.snackbar_color = 'error'
-          this.snackbar_timeout = 4000
-          this.snackbar_text = 'Error inesperado.'
-          this.snackbar = true
+          this.loading = false
+          this.error = true
         })
     },
     editItem (item) {
       this.editedIndex = this.trayectos.indexOf(item)
       this.editedItem = Object.assign({}, item)
+      var horariostr = item.horario
+      var res = horariostr.split('T')
+      this.editedItem.picker_date = res[0]
+      this.editedItem.picker_time = res[1].slice(0, -1)
       this.dialog = true
-      //la fecha arreglar
     },
     deleteItem (item) {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
@@ -295,7 +299,7 @@ export default {
           this.close()
         } else {
           if (confirm('¿Estas seguro que quiere editar el trayecto?')) {
-            axios.put(url + 'trayectoSet/' + item.id + '/',{
+            axios.put(url + 'trayectoSet/' + this.editedItem.id + '/', {
               origen: this.editedItem.origen,
               destino: this.editedItem.destino,
               horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,
@@ -305,7 +309,7 @@ export default {
               this.initialize()
               this.snackbar_color = 'success'
               this.snackbar_timeout = 4000
-              this.snackbar_text = 'Se ha eliminado con exito.'
+              this.snackbar_text = 'Se ha editado con exito.'
               this.snackbar = true
             }).catch(e => {
               this.snackbar_color = 'error'

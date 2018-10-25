@@ -20,7 +20,11 @@ Vue.use(Vuetify, {
     'delete': 'delete',
     'edit': 'edit',
     'directions_bus': 'directions_bus',
-    'view_headline': 'view_headline'
+    'view_headline': 'view_headline',
+    'dashboard': 'dashboard',
+    'people': 'people',
+    'place': 'place',
+    'airline_seat_recline_normal': 'airline_seat_recline_normal'
   },
   options: {
     minifyTheme: function (css) {

@@ -2,17 +2,41 @@
   <div>
   <v-navigation-drawer class="teal teal darken-4" dark fixed clipped v-model="drawer" app>
     <v-list dense>
-       <v-subheader class="mt-3 gray--text">Menu</v-subheader>
-       <v-list-tile active-class="default-class teal accent-4" v-for="item in items" :key="item.text" avatar :to="{ name: item.text}">
-        <v-list-tile-action>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>
-            {{ item.text }}
-          </v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+      <v-subheader class="mt-3 gray--text">Menu</v-subheader>
+      <div v-for="item in items" :key="item.text">
+       <div v-if="item.icon !== 'insert_chart'">
+        <v-list-tile slot="activator" active-class="teal accent-4" avatar :to="{name: item.text}">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              {{ item.text }}
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </div>
+      <div v-else>
+      <v-list-group no-action >
+        <v-list-tile slot="activator">
+          <v-list-tile-action>
+            <v-icon>
+              dashboard
+            </v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Dashboard</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+          <v-list-tile v-for="item1 in dashboard" active-class="teal accent-4" :key="item1.text" avatar :to="{name: item1.text}">
+            <v-list-tile-action active-class="teal accent-2">
+              <v-icon>{{item1.icon}}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title>{{item1.text}}</v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
+      </div>
+    </div>
     </v-list>
   </v-navigation-drawer>
   <v-toolbar color="teal" app fixed clipped-left dark>
@@ -29,6 +53,11 @@ export default {
       { icon: 'home', text: 'Home' },
       { icon: 'insert_chart', text: 'Dashboard' },
       { icon: 'info', text: 'About' }
+    ],
+    dashboard: [
+      { icon: 'terrain', text: 'Trayectos' },
+      { icon: 'airline_seat_recline_normal', text: 'Choferes' },
+      { icon: 'people', text: 'Pasajeros' }
     ]
   }),
   props: {
