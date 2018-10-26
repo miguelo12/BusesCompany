@@ -113,7 +113,10 @@
           <v-btn color="teal" @click="deleteItem(props.item)" flat>
             <v-icon>delete</v-icon>
           </v-btn>
-          <v-btn color="teal" :to="{name: 'Buses', params:{ id: props.item.id }}" flat>
+          <v-btn color="teal" v-if="props.item.buses" :to="{name: 'BusesConbus', params:{ id: props.item.id, idbus: props.item.buses.id }}" flat>
+            <v-icon>directions_bus</v-icon>
+          </v-btn>
+          <v-btn color="teal" v-if="!props.item.buses" :to="{name: 'BusesSinbus', params:{ id: props.item.id }}" flat>
             <v-icon>directions_bus</v-icon>
           </v-btn>
         </td>
@@ -303,8 +306,7 @@ export default {
               origen: this.editedItem.origen,
               destino: this.editedItem.destino,
               horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,
-              subida: this.editedItem.subida,
-              buses: this.editedItem.buses
+              subida: this.editedItem.subida
             }).then(response => {
               this.initialize()
               this.snackbar_color = 'success'

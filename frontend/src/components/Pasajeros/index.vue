@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar flat color="white">
+    <v-toolbar flat>
       <v-toolbar-title>Pasajeros</v-toolbar-title>
       <v-divider
         class="mx-2"
@@ -20,10 +20,10 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.nombre" :rules="[v => !!v || 'Nombre is required']" label="Nombre" required></v-text-field>
+                    <v-text-field v-model="editedItem.nombre" :rules="nameRules" label="Nombre" required></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.rut" :rules="[v => !!v || 'rut is required']" label="Rut" required></v-text-field>
+                    <v-text-field v-model="editedItem.rut" :rules="rutRules" label="Rut" required></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -43,12 +43,12 @@
       :items="trayectos"
       hide-actions
       :loading="loading"
-      class="elevation-1">
+      class="elevation-2">
       <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
-        <td class="text-xs-left">{{ props.item.rut }}</td>
-        <td class="text-xs-left">{{ props.item.nombre }}</td>
-        <td class="justify-center layout px-0">
+        <td width="200px" class="text-xs-left">{{ props.item.rut }}</td>
+        <td width="200px" class="text-xs-left">{{ props.item.nombre }}</td>
+        <td width="100px" class="justify-center layout px-0">
           <v-btn color="teal" @click="editItem(props.item)" flat>
             <v-icon>edit</v-icon>
           </v-btn>
@@ -97,6 +97,18 @@ export default {
     snackbar_timeout: 100,
     snackbar_text: '',
     busesBox: [],
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => /^[A-Za-z]+$/.test(v) || 'Solo Palabras.',
+      v => v.length <= 50 || 'Name must be less than 50 characters',
+      v => v.length >= 3 || 'Rut must be more than 3 characters'
+    ],
+    rutRules: [
+      v => !!v || 'Rut is required',
+      v => /[0-9.]/.test(v) || 'Solo numeros.',
+      v => v.length <= 11 || 'Rut must be less than 11 characters',
+      v => v.length >= 10 || 'Rut must be more than 10 characters'
+    ],
     headers: [
       {
         align: 'left',
@@ -164,6 +176,7 @@ export default {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
         axios.delete(url + 'pasajeros/' + item.id + '/').then(response => {
           this.initialize()
+          this.$emit('pasajeroCRUD')
           this.snackbar_color = 'success'
           this.snackbar_timeout = 4000
           this.snackbar_text = 'Se ha eliminado con exito.'
@@ -191,6 +204,7 @@ export default {
             rut: this.editedItem.rut
           }).then(response => {
             this.initialize()
+            this.$emit('pasajeroCRUD')
             this.snackbar_color = 'success'
             this.snackbar_timeout = 4000
             this.snackbar_text = 'Se ha guardado con exito.'
@@ -209,6 +223,7 @@ export default {
               rut: this.editedItem.rut
             }).then(response => {
               this.initialize()
+              this.$emit('pasajeroCRUD')
               this.snackbar_color = 'success'
               this.snackbar_timeout = 4000
               this.snackbar_text = 'Se ha editado con exito.'

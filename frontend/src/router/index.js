@@ -28,10 +28,16 @@ export default new Router({
       component: Dashboard,
       children: [
         {
-          // /Dashboard/Buses
+          path: 'Trayectos/Buses/:id/:idbus',
+          name: 'BusesConbus',
+          component: Buses,
+          props: true
+        },
+        {
           path: 'Trayectos/Buses/:id',
-          name: 'Buses',
-          component: Buses
+          name: 'BusesSinbus',
+          component: Buses,
+          props: true
         },
         {
           path: 'Trayectos',
