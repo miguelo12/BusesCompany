@@ -4,7 +4,7 @@
     <v-list dense>
       <v-subheader class="mt-3 gray--text">Menu</v-subheader>
       <div v-for="item in items" :key="item.text">
-       <div v-if="item.icon !== 'insert_chart'">
+       <div v-if="item.icon !== 'home'">
         <v-list-tile slot="activator" active-class="teal accent-4" avatar :to="{name: item.text}">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -21,11 +21,11 @@
         <v-list-tile slot="activator">
           <v-list-tile-action>
             <v-icon>
-              dashboard
+              home
             </v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Dashboard</v-list-tile-title>
+            <v-list-tile-title>App</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
           <v-list-tile v-for="item1 in dashboard" active-class="teal accent-4" :key="item1.text" avatar :to="{name: item1.text}">
@@ -50,8 +50,8 @@ export default {
   data: () => ({
     drawer: true,
     items: [
-      { icon: 'home', text: 'Home' },
       { icon: 'insert_chart', text: 'Dashboard' },
+      { icon: 'home', text: 'App' },
       { icon: 'info', text: 'About' }
     ],
     dashboard: [

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/pages/Home'
+import App from '@/pages/App'
 import Dashboard from '@/pages/Dashboard'
 import Buses from '@/components/Buses/index'
 import Trayectos from '@/components/Trayectos/index'
@@ -15,17 +15,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: { name: 'Home' }
+      redirect: { name: 'Dashboard' }
     },
     {
-      path: '/home',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/Dashboard',
+      path: '/dashboard',
       name: 'Dashboard',
-      component: Dashboard,
+      component: Dashboard
+    },
+    {
+      path: '/App',
+      name: 'App',
+      component: App,
       children: [
         {
           path: 'Trayectos/Buses/:id/:idbus',

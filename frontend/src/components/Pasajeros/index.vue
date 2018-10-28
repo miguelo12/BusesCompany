@@ -152,7 +152,7 @@ export default {
     initialize () {
       this.loading = true
       this.error = false
-      axios.get(url + 'pasajeros/')
+      axios.get(url + 'pasajerosCRUD/')
         .then(response => {
           this.trayectos = response.data
           this.loading = false
@@ -170,11 +170,10 @@ export default {
       this.editedIndex = this.trayectos.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      // la fecha arreglar
     },
     deleteItem (item) {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
-        axios.delete(url + 'pasajeros/' + item.id + '/').then(response => {
+        axios.delete(url + 'pasajerosCRUD/' + item.id + '/').then(response => {
           this.initialize()
           this.$emit('pasajeroCRUD')
           this.snackbar_color = 'success'
@@ -199,7 +198,7 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         if (this.editedItem.codigo === '') {
-          axios.post(url + 'pasajeros/', {
+          axios.post(url + 'pasajerosCRUD/', {
             nombre: this.editedItem.nombre,
             rut: this.editedItem.rut
           }).then(response => {
@@ -218,7 +217,7 @@ export default {
           this.close()
         } else {
           if (confirm('¿Estas seguro que quiere editar el trayecto?')) {
-            axios.put(url + 'pasajeros/' + this.editedItem.id + '/', {
+            axios.put(url + 'pasajerosCRUD/' + this.editedItem.id + '/', {
               nombre: this.editedItem.nombre,
               rut: this.editedItem.rut
             }).then(response => {

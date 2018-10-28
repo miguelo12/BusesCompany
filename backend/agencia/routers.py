@@ -1,11 +1,13 @@
 from rest_framework import routers
-from agencia.viewsets import ChoferesViewSet, PasajerosViewSet, BusesViewSet, TrayectosViewSet, SetTrayectosViewSet, SetBusesViewSet
+from agencia.viewsets import choferesCRUDViewSet, pasajerosCRUDViewSet, busesRViewSet, trayectosRViewSet, trayectoCUDViewSet, busCUDViewSet, asientoAsignadoCRUDViewSet
 
 router = routers.DefaultRouter()
 
-router.register(r'choferes', ChoferesViewSet, base_name=ChoferesViewSet)
-router.register(r'pasajeros', PasajerosViewSet, base_name=PasajerosViewSet)
-router.register(r'buses', BusesViewSet, base_name=BusesViewSet)
-router.register(r'trayectos', TrayectosViewSet, base_name=TrayectosViewSet)
-router.register(r'trayectoSet', SetTrayectosViewSet, base_name=SetTrayectosViewSet)
-router.register(r'BusSet', SetBusesViewSet, base_name=SetBusesViewSet)
+router.register(r'choferesCRUD', choferesCRUDViewSet, base_name=choferesCRUDViewSet)
+router.register(r'pasajerosCRUD', pasajerosCRUDViewSet, base_name=pasajerosCRUDViewSet)
+router.register(r'busesR', busesRViewSet, base_name=busesRViewSet)
+router.register(r'trayectosR', trayectosRViewSet, base_name=trayectosRViewSet)
+
+router.register(r'trayectoCUD', trayectoCUDViewSet, base_name=trayectoCUDViewSet)
+router.register(r'busCUD', busCUDViewSet, base_name=busCUDViewSet)
+router.register(r'asientoAsignadoCRUD', asientoAsignadoCRUDViewSet, base_name=asientoAsignadoCRUDViewSet)

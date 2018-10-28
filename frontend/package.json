@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
+    "apexcharts": "^2.1.6",
     "axios": "^0.18.0",
     "vue": "^2.5.2",
+    "vue-apexcharts": "^1.2.2",
     "vue-router": "^3.0.1",
     "vue2-datepicker": "^2.6.0",
     "vuetify": "^1.2.0"

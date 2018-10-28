@@ -137,7 +137,7 @@ export default {
     initialize () {
       this.loading = true
       this.error = false
-      axios.get(url + 'choferes/')
+      axios.get(url + 'choferesCRUD/')
         .then(response => {
           this.choferes = response.data
           this.loading = false
@@ -159,7 +159,7 @@ export default {
     },
     deleteItem (item) {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
-        axios.delete(url + 'choferes/' + item.id + '/').then(response => {
+        axios.delete(url + 'choferesCRUD/' + item.id + '/').then(response => {
           this.initialize()
           this.snackbar_color = 'success'
           this.snackbar_timeout = 4000
@@ -183,7 +183,7 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         if (this.editedItem.codigo === '') {
-          axios.post(url + 'choferes/', {
+          axios.post(url + 'choferesCRUD/', {
             nombre: this.editedItem.nombre,
             rut: this.editedItem.rut
           }).then(response => {
@@ -201,7 +201,7 @@ export default {
           this.close()
         } else {
           if (confirm('¿Estas seguro que quiere editar el chofer?')) {
-            axios.put(url + 'choferes/' + this.editedItem.id + '/', {
+            axios.put(url + 'choferesCRUD/' + this.editedItem.id + '/', {
               nombre: this.editedItem.nombre,
               rut: this.editedItem.rut
             }).then(response => {

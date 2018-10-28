@@ -232,7 +232,7 @@ export default {
     initialize () {
       this.loading = true
       this.error = false
-      axios.get(url + 'trayectos/')
+      axios.get(url + 'trayectosR/')
         .then(response => {
           this.trayectos = response.data
           this.loading = false
@@ -257,7 +257,7 @@ export default {
     },
     deleteItem (item) {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {
-        axios.delete(url + 'trayectoSet/' + item.id + '/').then(response => {
+        axios.delete(url + 'trayectoCUD/' + item.id + '/').then(response => {
           this.initialize()
           this.snackbar_color = 'success'
           this.snackbar_timeout = 4000
@@ -281,7 +281,7 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         if (this.editedItem.codigo === '') {
-          axios.post(url + 'trayectoSet/', {
+          axios.post(url + 'trayectoCUD/', {
             origen: this.editedItem.origen,
             destino: this.editedItem.destino,
             horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,
@@ -302,7 +302,7 @@ export default {
           this.close()
         } else {
           if (confirm('¿Estas seguro que quiere editar el trayecto?')) {
-            axios.put(url + 'trayectoSet/' + this.editedItem.id + '/', {
+            axios.put(url + 'trayectoCUD/' + this.editedItem.id + '/', {
               origen: this.editedItem.origen,
               destino: this.editedItem.destino,
               horario: this.editedItem.picker_date + ' ' + this.editedItem.picker_time,

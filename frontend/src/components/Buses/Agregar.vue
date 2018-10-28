@@ -4,8 +4,9 @@
       Bus
     </h3>
     <h4 class="display-1">
-      Datos del bus {{ idBus }}
+      Datos del bus
     </h4>
+    <br>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-text-field
         v-model="matricula"
@@ -22,6 +23,7 @@
         required></v-select>
       <v-btn :disabled="!valid" @click="submit" color="info">Submit</v-btn>
       <v-btn @click="clear" color="error">Reset</v-btn>
+      <br>
     </v-form>
   </v-container>
 </template>
@@ -48,16 +50,16 @@ export default {
     submit () {
       if (this.$refs.form.validate()) {
         if (this.idBus) {
-          axios.put(url + 'BusSet/' + this.idBus + '/', {
+          axios.patch(url + 'busCUD/' + this.idBus + '/', {
             matricula: this.matricula,
             choferes: this.chofer
           }).then(response => {
-            alert(response.data)
+            this.initialize()
           }).catch(e => {
             alert(e)
           })
         } else {
-          axios.post(url + 'BusSet/', {
+          axios.post(url + 'busCUD/', {
             matricula: this.matricula,
             choferes: this.chofer
           }).then(response => {
@@ -69,16 +71,26 @@ export default {
       }
     },
     update (idbus) {
-      axios.put(url + 'trayectoSet/' + this.idTrayecto + '/', {
-        choferes: idbus
+      axios.patch(url + 'trayectoCUD/' + this.idTrayecto + '/', {
+        buses: idbus
       }).then(response => {
-        this.items(response.id)
+        this.$emit('busCUD', idbus)
       }).catch(e => {
         alert(e)
       })
     },
     initialize () {
-      axios.get(url + 'choferes/')
+      if (this.idBus) {
+        axios.get(url + 'busesR/' + this.idBus + '/')
+          .then(response => {
+            this.matricula = response.data.matricula
+            this.chofer = response.data.choferes.id
+          }).catch(e => {
+            alert(e)
+          })
+      }
+
+      axios.get(url + 'choferesCRUD/')
         .then(response => {
           this.items = response.data
         }).catch(e => {

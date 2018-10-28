@@ -26,9 +26,6 @@ class Buses (Document):
     matricula = fields.StringField(max_length=100, blank=False, required=True)
     choferes = fields.ReferenceField(Choferes, blank=False, required=True, dbref=True)
     asientoAsignado = fields.EmbeddedDocumentListField(AsientoAsignado)
-    
-    def __str__(self):
-        return self.id
 
 class Trayectos (Document):
     origen = fields.StringField(max_length=150, blank=False, required=True)
