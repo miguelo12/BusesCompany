@@ -51,3 +51,9 @@ class asientoAsignadoCRUDSerializer(DocumentSerializer):
     class Meta:
         model = Buses
         fields = ['id','asientoAsignado']
+
+class trayectoPasajeroRSerializer(DocumentSerializer):
+    buses = busesRSerializer(many=False)
+    class Meta:
+        model = Trayectos
+        fields = '__all__'

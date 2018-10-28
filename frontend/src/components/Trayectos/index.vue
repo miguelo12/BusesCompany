@@ -20,10 +20,10 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.origen" :rules="[v => !!v || 'Origen is required']" label="Origen" required></v-text-field>
+                    <v-text-field v-model="editedItem.origen" :rules="origenRules" label="Origen" required></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.destino" :rules="[v => !!v || 'Destino is required']" label="Destino" required></v-text-field>
+                    <v-text-field v-model="editedItem.destino" :rules="destinoRules" label="Destino" required></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-dialog
@@ -76,7 +76,7 @@
                   </v-flex>
 
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.subida" :rules="[v => !!v || 'Subida is required']" label="Subida" required></v-text-field>
+                    <v-text-field v-model="editedItem.subida" :rules="subidaRules" label="Subida" required></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -132,8 +132,7 @@
       v-model="snackbar"
       :color="snackbar_color"
       :multi-line="true"
-      :timeout="snackbar_timeout"
-    >
+      :timeout="snackbar_timeout">
       {{ snackbar_text }}
       <v-btn
         dark
@@ -156,6 +155,21 @@ export default {
     error: false,
     valid: false,
     dialog: false,
+    origenRules: [
+      v => !!v || 'Origen es requerido',
+      v => v.length <= 50 || 'Origen debe ser menor o igual a  50 characters',
+      v => v.length >= 3 || 'Origen debe ser mayor o igual a 3 characters'
+    ],
+    destinoRules: [
+      v => !!v || 'Destino es requerido',
+      v => v.length <= 50 || 'Destino debe ser menor o igual a  50 characters',
+      v => v.length >= 3 || 'Destino debe ser mayor o igual a 3 characters'
+    ],
+    subidaRules: [
+      v => !!v || 'Subida es requerido',
+      v => v.length <= 50 || 'Subida debe ser menor o igual a  50 characters',
+      v => v.length >= 3 || 'Subida debe ser mayor o igual a 3 characters'
+    ],
     snackbar: false,
     snackbar_color: '',
     snackbar_timeout: 100,

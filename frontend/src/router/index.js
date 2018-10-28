@@ -24,7 +24,7 @@ export default new Router({
     },
     {
       path: '/App',
-      name: 'App',
+      name: 'Agencia',
       component: App,
       children: [
         {

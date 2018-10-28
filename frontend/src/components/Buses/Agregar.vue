@@ -17,14 +17,26 @@
       <v-select
         v-model="chofer"
         :items="items"
-        :rules="[v => !!v || 'Chofer is required']"
+        :rules="[v => !!v || 'Chofer es requerido']"
         label="Chofer:"
         :item-text="item => item.nombre+' '+item.rut" :item-value="item => item.id"
         required></v-select>
       <v-btn :disabled="!valid" @click="submit" color="info">Submit</v-btn>
-      <v-btn @click="clear" color="error">Reset</v-btn>
       <br>
     </v-form>
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbar_color"
+      :multi-line="true"
+      :timeout="snackbar_timeout">
+      {{ snackbar_text }}
+      <v-btn
+        dark
+        flat
+        @click="snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 <script>
@@ -34,13 +46,16 @@ const url = 'http://localhost:8000/api/'
 
 export default {
   data: () => ({
+    snackbar: false,
+    snackbar_color: '',
+    snackbar_timeout: 100,
+    snackbar_text: '',
     valid: false,
     matricula: '',
     matriculaRules: [
-      v => !!v || 'Matricula is required',
-      v => /^[A-Za-z]+$/.test(v) || 'Solo Palabras.',
-      v => v.length <= 50 || 'Matricula must be less than 50 characters',
-      v => v.length >= 3 || 'Matricula must be more than 3 characters'
+      v => !!v || 'Matricula es requerido',
+      v => v.length <= 50 || 'Matricula debe ser menor o igual a 50 characters',
+      v => v.length >= 3 || 'Matricula debe ser mayor o igual a 3 characters'
     ],
     chofer: null,
     items: []
@@ -55,8 +70,15 @@ export default {
             choferes: this.chofer
           }).then(response => {
             this.initialize()
+            this.snackbar_color = 'success'
+            this.snackbar_timeout = 3000
+            this.snackbar_text = 'Se ha actualizado con exito.'
+            this.snackbar = true
           }).catch(e => {
-            alert(e)
+            this.snackbar_color = 'error'
+            this.snackbar_timeout = 3000
+            this.snackbar_text = 'No has seleccionado asiento.'
+            this.snackbar = true
           })
         } else {
           axios.post(url + 'busCUD/', {
@@ -64,8 +86,15 @@ export default {
             choferes: this.chofer
           }).then(response => {
             this.update(response.data.id)
+            this.snackbar_color = 'success'
+            this.snackbar_timeout = 3000
+            this.snackbar_text = 'Se ha ingresado con exito.'
+            this.snackbar = true
           }).catch(e => {
-            alert(e)
+            this.snackbar_color = 'error'
+            this.snackbar_timeout = 3000
+            this.snackbar_text = 'No has seleccionado asiento.'
+            this.snackbar = true
           })
         }
       }
@@ -76,7 +105,10 @@ export default {
       }).then(response => {
         this.$emit('busCUD', idbus)
       }).catch(e => {
-        alert(e)
+        this.snackbar_color = 'error'
+        this.snackbar_timeout = 3000
+        this.snackbar_text = 'Error inesperado.'
+        this.snackbar = true
       })
     },
     initialize () {
@@ -86,19 +118,21 @@ export default {
             this.matricula = response.data.matricula
             this.chofer = response.data.choferes.id
           }).catch(e => {
-            alert(e)
+            this.snackbar_color = 'error'
+            this.snackbar_timeout = 3000
+            this.snackbar_text = 'Error inesperado.'
+            this.snackbar = true
           })
       }
-
       axios.get(url + 'choferesCRUD/')
         .then(response => {
           this.items = response.data
         }).catch(e => {
-          alert(e)
+          this.snackbar_color = 'error'
+          this.snackbar_timeout = 3000
+          this.snackbar_text = 'Error inesperado.'
+          this.snackbar = true
         })
-    },
-    clear () {
-      this.$refs.form.reset()
     }
   },
   mounted () {

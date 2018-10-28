@@ -11,12 +11,24 @@
             </v-flex>
           </v-layout>
         </v-flex>
+        <v-flex d-flex xs12>
+          <v-layout row wrap>
+            <v-flex d-flex>
+              <v-card>
+                <apexcharts width="500" type="bar" :options="options" :series="series"></apexcharts>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-flex>
       </v-layout>
     </v-container>
   </div>
 </template>
 <script>
 import VueApexCharts from 'vue-apexcharts'
+import axios from 'axios'
+
+const url = 'http://localhost:8000/api/'
 
 export default {
   components: {
@@ -35,30 +47,23 @@ export default {
       name: 'series-1',
       data: [30, 40, 45, 50, 49, 60, 70, 91]
     }],
-    ActualizarPasajero: 0,
-    idTrayecto: 0,
-    idBus: 0,
     snackbar: false,
     snackbar_color: '',
     snackbar_timeout: 100,
     snackbar_text: ''
   }),
   methods: {
-    GenerateDayWiseTimeSeries (baseval, count, yrange) {
-      var i = 0
-      var series = []
-      while (i < count) {
-        var x = baseval
-        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min
-
-        series.push([x, y])
-        baseval += 86400000
-        i++
-      }
-      return series
+    initialize () {
+      axios.get(url + 'trayectosR/')
+        .then(response => {
+          console.log(response.data)
+        }).catch(e => {
+          alert(e)
+        })
     }
   },
   created: function () {
+    this.initialize()
   }
 }
 </script>

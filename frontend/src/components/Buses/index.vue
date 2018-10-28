@@ -43,11 +43,7 @@ export default {
   data: () => ({
     ActualizarPasajero: 0,
     idTrayecto: 0,
-    idBus: 0,
-    snackbar: false,
-    snackbar_color: '',
-    snackbar_timeout: 100,
-    snackbar_text: ''
+    idBus: 0
   }),
   methods: {
     actualizarPasajero () {
@@ -61,8 +57,6 @@ export default {
   created: function () {
     this.idTrayecto = this.$route.params.id
     this.idBus = this.$route.params.idbus
-  },
-  mounted () {
   }
 }
 </script>

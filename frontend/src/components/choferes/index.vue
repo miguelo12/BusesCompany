@@ -19,10 +19,10 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.nombre" :rules="[v => !!v || 'Nombre is required']" label="Nombre" required></v-text-field>
+                    <v-text-field v-model="editedItem.nombre" :rules="nameRules" label="Nombre" required></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.rut" :rules="[v => !!v || 'Rut is required']" label="Rut" required></v-text-field>
+                    <v-text-field v-model="editedItem.rut" :rules="rutRules" label="Rut" required></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -121,7 +121,19 @@ export default {
       codigo: '',
       nombre: '',
       rut: ''
-    }
+    },
+    nameRules: [
+      v => !!v || 'Nombre es requerido',
+      v => /^[A-Za-z]+$/.test(v) || 'Solo Palabras.',
+      v => v.length <= 50 || 'Nombre debe ser menor o igual a  50 characters',
+      v => v.length >= 3 || 'Nombre debe ser mayor o igual a 3 characters'
+    ],
+    rutRules: [
+      v => !!v || 'Rut es requerido',
+      v => /[0-9.]/.test(v) || 'Solo numeros.',
+      v => v.length <= 11 || 'Rut debe ser menor o igual a  11 characters',
+      v => v.length >= 10 || 'Rut debe ser mayor o igual a 10 characters'
+    ]
   }),
   computed: {
     formTitle () {
@@ -155,7 +167,6 @@ export default {
       this.editedIndex = this.choferes.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      // la fecha arreglar
     },
     deleteItem (item) {
       if (confirm('¿Estas seguro que quiere eliminar el trayecto?')) {

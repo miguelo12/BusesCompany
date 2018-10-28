@@ -25,7 +25,7 @@
             </v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>App</v-list-tile-title>
+            <v-list-tile-title>Agencia</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
           <v-list-tile v-for="item1 in dashboard" active-class="teal accent-4" :key="item1.text" avatar :to="{name: item1.text}">

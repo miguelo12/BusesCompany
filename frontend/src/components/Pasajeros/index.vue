@@ -98,16 +98,16 @@ export default {
     snackbar_text: '',
     busesBox: [],
     nameRules: [
-      v => !!v || 'Name is required',
+      v => !!v || 'Nombre es requerido',
       v => /^[A-Za-z]+$/.test(v) || 'Solo Palabras.',
-      v => v.length <= 50 || 'Name must be less than 50 characters',
-      v => v.length >= 3 || 'Rut must be more than 3 characters'
+      v => v.length <= 50 || 'Nombre debe ser menor o igual a  50 characters',
+      v => v.length >= 3 || 'Nombre debe ser mayor o igual a 3 characters'
     ],
     rutRules: [
-      v => !!v || 'Rut is required',
+      v => !!v || 'Rut es requerido',
       v => /[0-9.]/.test(v) || 'Solo numeros.',
-      v => v.length <= 11 || 'Rut must be less than 11 characters',
-      v => v.length >= 10 || 'Rut must be more than 10 characters'
+      v => v.length <= 11 || 'Rut debe ser menor o igual a  11 characters',
+      v => v.length >= 10 || 'Rut debe ser mayor o igual a 10 characters'
     ],
     headers: [
       {

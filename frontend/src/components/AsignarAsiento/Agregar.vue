@@ -6,16 +6,16 @@
     <h4 class="display-1">
       Eligir asiento para el pasajero.
     </h4>
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form ref="form" v-model="valid">
     <v-container>
       <v-layout row justify-center >
         <v-flex xs12 >
-          <v-layout row justify-center >
+          <v-layout column justify-center >
             <v-flex xs12 md6 >
               <v-img src="@/assets/bus-top-edit.png" height="550px" width="100%" style="padding-top:240px" contain>
                 <v-layout justify-center  :key="s" v-for="s in 5">
-                  <v-btn @click="provide(asientos[(2*(s-1))])" :disabled="asientos[(2*(s-1))].disabled" v-bind:class="{'teal darken-2 white--text': contains(reserva_seleccionada, asientos[(2*(s-1))]),'teal lighten-4 black--text': !contains(reserva_seleccionada, asientos[(2*(s-1))])}" >{{ asientos[(2*(s-1))].name }}</v-btn>
-                  <v-btn @click="provide(asientos[(2*(s-1))+1])" :disabled="asientos[(2*(s-1))+1].disabled"  v-bind:class="{'teal darken-2 white--text': contains(reserva_seleccionada, asientos[(2*(s-1))+1]),'teal lighten-4 black--text': !contains(reserva_seleccionada, asientos[(2*(s-1))+1])}" >{{ asientos[(2*(s-1))+1].name }}</v-btn>
+                  <v-btn @click="provide(asientos[(2*(s-1))])" :disabled="asiento_disable[(2*(s-1))]" v-bind:class="{'teal darken-2 white--text': contains(reserva_seleccionada, asientos[(2*(s-1))]),'teal lighten-4 black--text': !contains(reserva_seleccionada, asientos[(2*(s-1))])}" >{{ asientos[(2*(s-1))] }}</v-btn>
+                  <v-btn @click="provide(asientos[(2*(s-1))+1])" :disabled="asiento_disable[(2*(s-1))+1]" v-bind:class="{'teal darken-2 white--text': contains(reserva_seleccionada, asientos[(2*(s-1))+1]),'teal lighten-4 black--text': !contains(reserva_seleccionada, asientos[(2*(s-1))+1])}" >{{ asientos[(2*(s-1))+1] }}</v-btn>
                 </v-layout>
               </v-img>
             </v-flex>
@@ -35,6 +35,20 @@
       <v-btn :disabled="!valid" @click="submit" color="info">Submit</v-btn>
       <v-btn @click="clear" color="error">Reset</v-btn>
     </v-form>
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbar_color"
+      :multi-line="true"
+      :timeout="snackbar_timeout">
+      {{ snackbar_text }}
+      <v-btn
+        dark
+        flat
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 <script>
@@ -43,8 +57,13 @@ const url = 'http://localhost:8000/api/'
 
 export default {
   data: () => ({
+    snackbar: false,
+    snackbar_color: '',
+    snackbar_timeout: 100,
+    snackbar_text: '',
     valid: false,
-    asientos: [{name: 1, disabled: false}, {name: 2, disabled: false}, {name: 3, disabled: false}, {name: 4, disabled: false}, {name: 5, disabled: false}, {name: 6, disabled: false}, {name: 7, disabled: false}, {name: 8, disabled: false}, {name: 9, disabled: false}, {name: 10, disabled: false}],
+    asiento_disable: [false, false, false, false, false, false, false, false, false, false],
+    asientos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     reserva_seleccionada: [],
     reserva: [],
     reserva_guardada: [],
@@ -58,20 +77,21 @@ export default {
         this.initialize()
         this.$emit('actualizarPasajero')
       }
-    }
-  },
-  computed: {
-    disabledButton: function () {
-      Object.keys(this.asientos).forEach(key => {
-        this.reserva_guardada.forEach(elemguardado => {
-          if (this.asientos[key].name === elemguardado.numeroAsiento) {
-            this.$set(this.asientos[key],'disabled', true)
-          }
-        })
-      })
+    },
+    reserva_guardada: function () {
+      this.disabledButton()
     }
   },
   methods: {
+    disabledButton () {
+      Object.keys(this.asientos).forEach(key => {
+        this.reserva_guardada.forEach(elemguardado => {
+          if (this.asientos[key] === elemguardado.numeroAsiento) {
+            this.$set(this.asiento_disable, key, true)
+          }
+        })
+      })
+    },
     submit (evt) {
       if (this.$refs.form.validate()) {
         if (this.idBus) {
@@ -79,12 +99,12 @@ export default {
             this.reserva_seleccionada.forEach(elementrsvslc => {
               var existreserva = false
               this.reserva.forEach(elementrsv => {
-                if (elementrsv.asiento === elementrsvslc.name) {
+                if (elementrsv.asiento === elementrsvslc) {
                   existreserva = true
                 }
               })
               if (!existreserva) {
-                this.reserva.push({'pasajero_id': this.pasajero_id, 'numeroAsiento': elementrsvslc.name})
+                this.reserva.push({ 'pasajero_id': this.pasajero_id, 'numeroAsiento': elementrsvslc })
               }
             })
             axios.patch(url + 'asientoAsignadoCRUD/' + this.idBus + '/', {
@@ -92,14 +112,20 @@ export default {
               asientoAsignado: this.reserva
             }).then(response => {
               this.reserva_guardada.push(this.reserva)
-              this.disabledButton
-              alert('se guardo con exito')
+              alert('Se ha guardado con exito.')
+              this.$router.go() // parche horrible
             }).catch(e => {
-              alert(e)
+              this.snackbar_color = 'error'
+              this.snackbar_timeout = 4000
+              this.snackbar_text = 'Error inesperado.'
+              this.snackbar = true
             })
             this.reserva = []
           } else {
-            alert('No has seleccionado asiento')
+            this.snackbar_color = 'error'
+            this.snackbar_timeout = 4000
+            this.snackbar_text = 'No has seleccionado asiento.'
+            this.snackbar = true
           }
         }
       }
@@ -110,16 +136,21 @@ export default {
         ).then(response => {
           this.reserva_guardada = response.data.asientoAsignado
           this.reserva = []
-          this.disabledButton
         }).catch(e => {
-          alert(e)
+          this.snackbar_color = 'error'
+          this.snackbar_timeout = 4000
+          this.snackbar_text = 'Error inesperado.'
+          this.snackbar = true
         })
       }
       axios.get(url + 'pasajerosCRUD/')
         .then(response => {
           this.items = response.data
         }).catch(e => {
-          this.trayectos = []
+          this.snackbar_color = 'error'
+          this.snackbar_timeout = 3000
+          this.snackbar_text = 'Error inesperado.'
+          this.snackbar = true
         })
     },
     clear (evt) {
@@ -137,7 +168,7 @@ export default {
       return arr.indexOf(item) !== -1
     }
   },
-  mounted () {
+  created () {
     this.initialize()
   }
 }
