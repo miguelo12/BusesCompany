@@ -127,6 +127,11 @@ export default {
             this.snackbar_text = 'No has seleccionado asiento.'
             this.snackbar = true
           }
+        } else {
+          this.snackbar_color = 'error'
+          this.snackbar_timeout = 4000
+          this.snackbar_text = 'Aun no ingresas un bus.'
+          this.snackbar = true
         }
       }
     },

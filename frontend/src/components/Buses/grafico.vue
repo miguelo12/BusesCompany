@@ -6,7 +6,7 @@
           <v-layout row wrap>
             <v-flex d-flex>
               <v-card>
-                <apexcharts width="500" type="bar" :options="options" :series="series"></apexcharts>
+                <apexcharts width="600" type="bar" :options="options" :series="series"></apexcharts>
               </v-card>
             </v-flex>
           </v-layout>
@@ -15,7 +15,30 @@
           <v-layout row wrap>
             <v-flex d-flex>
               <v-card>
-                <apexcharts width="500" type="bar" :options="options" :series="series"></apexcharts>
+                <v-list>
+                  <v-list-tile
+                    v-for="s in 1"
+                    :key="s"
+                    avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="'Trayecto'"></v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="'Pasajeros%'"></v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile
+                    v-for="(item,s) in datosTrayectos"
+                    :key="item.origen"
+                    avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="'origen: '+item.origen+' destino: '+item.destino"></v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="dataCant[s]+'%'"></v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list>
               </v-card>
             </v-flex>
           </v-layout>
@@ -40,26 +63,36 @@ export default {
         id: 'vuechart-example'
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        categories: ['Pasajero promedio']
       }
     },
     series: [{
-      name: 'series-1',
-      data: [30, 40, 45, 50, 49, 60, 70, 91]
+      name: 'Trayecto',
+      data: []
     }],
     snackbar: false,
     snackbar_color: '',
     snackbar_timeout: 100,
-    snackbar_text: ''
+    snackbar_text: '',
+    datosTrayectos: [],
+    dataCant: [],
+    dataName: []
   }),
   methods: {
-    initialize () {
+    initialize () {    
       axios.get(url + 'trayectosR/')
         .then(response => {
-          console.log(response.data)
+          response.data.forEach(element => {
+            if(element.buses){
+              this.dataCant.push(element.buses.asientoAsignado.length*10)
+              this.datosTrayectos.push(element)
+            }
+          })
         }).catch(e => {
           alert(e)
         })
+
+      this.series = [{ name: 'Trayecto' , data: this.dataCant }]
     }
   },
   created: function () {

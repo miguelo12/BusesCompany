@@ -3,7 +3,7 @@
     <v-app>
       <!-- <v-parallax dark height="1300" src="./assets/fondo-patagonia.jpg"> -->
         <NavBar v-if="'show-NavBar'" />
-          <v-content>
+          <v-content  class="green lighten-5">
             <router-view/>
           </v-content>
         <Footer v-if="'show-NavBar'" />
