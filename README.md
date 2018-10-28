@@ -26,7 +26,7 @@ npm install (instalar con npm para la primera vez).
 
 npm run dev
 ```
-#Supuestos
+# Supuestos
 ```
     - Se puede iniciar creando trayectos - choferes - pasajeros.
     - Al ingresar trayectos se habilitaran 3 botones. (editar-eliminar-bus)
@@ -34,12 +34,12 @@ npm run dev
     - Es necesario ingresar una matricula con un chofer para poder agregar pasajeros al bus.
 ```
 
-#Lo que no hace o funciona a medias
+# Lo que no hace o funciona a medias
 ```
     - No filtra.
     - Promedio del chart esta a medias.
 ```
-#Lo que se utilizo
+# Lo que se utilizo
 ```
     Frontend:
     - Vuetify 
